@@ -1,4 +1,4 @@
-export default async function getAPI(target) {
+export default async function getCurrentAPI(target) {
     try {
         const url = "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,wind_speed_10m,apparent_temperature,precipitation,relative_humidity_2m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m";
 
@@ -37,4 +37,57 @@ export default async function getAPI(target) {
     } catch (error) {
         console.error("Error fetching weather:", error);
     }
-}; 
+};
+
+export async function getDailyAPI() {
+    // You can also use "auto" instead of "Asia/Tashkent"
+    const timezone = "Europe/Berlin";
+
+    const url = `https://api.open-meteo.com/v1/forecast?` +
+        `latitude=52.52&` +
+        `longitude=13.41&` +
+        `daily=temperature_2m_max,temperature_2m_min,weather_code&` +
+        `timezone=${encodeURIComponent(timezone)}`;
+
+    try {
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error(`Weather API error: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Check if we have daily data
+        if (!data.daily || !data.daily.time) {
+            throw new Error("No daily forecast data received");
+        }
+
+        const result = [];
+
+        // We usually get 7 days (today + 6 future days)
+        for (let i = 0; i < data.daily.time.length; i++) {
+            const dateStr = data.daily.time[i]; // "2025-08-05"
+            const date = new Date(dateStr);
+
+            // Get short weekday name (Mon, Tue, etc.)
+            const dayName = date.toLocaleDateString("en-US", { weekday: "short" });
+
+            result.push({
+                day: dayName,                    // "Mon", "Tue", etc.
+                maxTemp: Math.round(data.daily.temperature_2m_max[i]),   // rounded
+                minTemp: Math.round(data.daily.temperature_2m_min[i]),
+                weatherCode: data.daily.weather_code[i]                  // WMO code for icon
+            });
+        }
+
+        console.log(result);
+
+        return result;
+
+    } catch (error) {
+        console.error("Failed to fetch 7-day forecast:", error);
+        return []; // return empty array on error
+    }
+}
+

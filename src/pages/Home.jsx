@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import "../styles/Home.css";
 import CityComponent from "../components/CityComponent";
-import getAPI from "../../utils/getAPI";
+import getCurrentAPI, { getDailyAPI } from "../../utils/getAPI";
+import DailyForecast from "../components/DailyForecast";
 
 export default function Home() {
     const [inputRegion, setInputRegion] = useState("");
@@ -12,8 +13,9 @@ export default function Home() {
         let isMounted = true;
 
         async function load() {
-            const result = await getAPI("home");
-            if (isMounted) setData(result);
+            const result1 = await getCurrentAPI("home");
+            const result2 = await getDailyAPI();
+            if (isMounted) setData([result1, result2]);
         }
         load();
 
@@ -32,7 +34,10 @@ export default function Home() {
                 <input type="text" value={inputRegion} onChange={(event) => setInputRegion(event.target.value)} />
             </div>
             <div className="home__inner">
-                {Data && <CityComponent data={Data} />}
+                <div className="home__left">
+                    {Data && <CityComponent data={Data[0]} />}
+                    {Data && <DailyForecast data={Data[1]} />}
+                </div>
                 <div className="hourlyForecast-container">
 
                 </div>

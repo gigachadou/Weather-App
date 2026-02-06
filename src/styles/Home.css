@@ -12,6 +12,12 @@
     display: flex;
 }
 
+.home__left {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}
+
 /* Components */
 
 /* CityComponent */
@@ -20,7 +26,7 @@
     /* Acts only as wrapper/container */
     display: flex;
     flex-direction: column;
-    width: 80%;
+    width: 100%;
     min-width: 380px;
     overflow: hidden;
     color: white;
@@ -141,4 +147,32 @@
 
 .smallInfo__info {
     font-size: 1.08rem;
+}
+
+/* Daily Forecast */
+
+.daily__inner {
+    display: flex;
+    gap: 8px;
+}
+
+h5 {
+    margin: 0;
+}
+
+.daily__div {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    background-color: var(--defaultBackground);
+    border-radius: var(--borderRadius);
+    width: 14.2%;
+    align-items: center;
+    gap: 10px;
+}
+
+.daily__div-inner{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
