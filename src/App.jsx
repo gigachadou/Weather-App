@@ -1,19 +1,19 @@
-import { useState } from 'react'
 import './styles/App.css'
-import Header from './components/Header'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 import Root from './Root';
 import CityInfo from './pages/CityInfo';
+import Home from './pages/Home';
 
 function App() {
   const router = createBrowserRouter([
     {
-      path: "/",
       element: <Root />,
       children: [
-        { path: "/cityInfo",  element: <CityInfo />}
+        { path: "/", element: <Home /> },
+        { path: "/cityInfo", element: <CityInfo /> }
       ]
-    }
+    },
+    { path: "*", element: <Navigate to="/" /> },
   ]);
   return (
     <>

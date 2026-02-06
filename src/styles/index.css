@@ -11,6 +11,10 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --defaultBackground: #25253F;
+  --borderRadius: 10px;
+  --borderLineColor: #8382ab;
 }
 
 a {
