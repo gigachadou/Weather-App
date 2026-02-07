@@ -2,9 +2,6 @@ import { IoSunnyOutline } from "react-icons/io5";
 import { WiDaySunny, WiNightClear } from "react-icons/wi";
 
 export default function CityComponent({ data, cityName }) {
-    // data = current weather object from Open-Meteo
-    // cityName = passed from parent (selected city name)
-    console.log(data);
     const isDay = data.is_day === 1;
 
     return (
@@ -27,24 +24,24 @@ export default function CityComponent({ data, cityName }) {
             </div>
 
             <div className="smallInfo-container">
-                <div className="smallInfo__div">
+                <div className="smallInfo__div morph">
                     <div className="smallInfo__label">Feels Like</div>
                     <div className="smallInfo__info">
                         {Math.round(data.feelsLike) + " " + data.units.feelsLike}
                     </div>
                 </div>
 
-                <div className="smallInfo__div">
+                <div className="smallInfo__div morph">
                     <div className="smallInfo__label">Humidity</div>
                     <div className="smallInfo__info">{data.humidity + " " + data.units.humidity}</div>
                 </div>
 
-                <div className="smallInfo__div">
+                <div className="smallInfo__div morph">
                     <div className="smallInfo__label">Wind</div>
                     <div className="smallInfo__info">{Math.round(data.windSpeed) + " " + data.units.windSpeed}</div>
                 </div>
 
-                <div className="smallInfo__div">
+                <div className="smallInfo__div morph">
                     <div className="smallInfo__label">Precipitation</div>
                     <div className="smallInfo__info">{(data.precipitation || 0) + " " + data.units.precipitation}</div>
                 </div>

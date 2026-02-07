@@ -6,6 +6,9 @@ import DailyForecast from "../components/DailyForecast";
 import getDailyAPI from "../../utils/getDailyAPI";
 import getCitySuggestions from "../../utils/getCitySuggestion";
 import getParamsForAPI from "../../utils/getParamsForAPI";
+import { IoSearchOutline } from "react-icons/io5";
+import getHourlyAPI from "../../utils/getHourlyAPI";
+import HourlyForecast from "../components/HourlyForecast";
 
 export default function Home() {
     const [inputRegion, setInputRegion] = useState("");
@@ -17,8 +20,10 @@ export default function Home() {
     });
     const [currentDataState, setCurrentDataState] = useState(null);
     const [dailyDataState, setDailyDataState] = useState(null);
+    const [hourlyDataState, setHourlyDataState] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [onFocusSuggestion, setOnFocusSuggestion] = useState(0);
 
     // Fetch weather whenever selected city changes
     useEffect(() => {
@@ -35,7 +40,7 @@ export default function Home() {
             setError(null);
 
             try {
-                const [currentData, dailyData] = await Promise.all([
+                const [currentData, dailyData, hourlyData] = await Promise.all([
                     getCurrentAPI({
                         latitude: selectedCity.lat,
                         longitude: selectedCity.lon,
@@ -44,12 +49,17 @@ export default function Home() {
                     getDailyAPI({
                         latitude: selectedCity.lat,
                         longitude: selectedCity.lon
+                    }),
+                    getHourlyAPI({
+                        latitude: selectedCity.lat,
+                        longitude: selectedCity.lon
                     })
                 ]);
-                console.log(currentData, dailyData)
+                console.log(hourlyData);
                 if (isMounted) {
                     setCurrentDataState({ data: currentData, cityName: selectedCity.name });
                     setDailyDataState(dailyData);
+                    setHourlyDataState(hourlyData);
                 }
             } catch (err) {
                 if (isMounted) {
@@ -74,7 +84,7 @@ export default function Home() {
         if (inputRegion.trim().length >= 2) {
             timer = setTimeout(async () => {
                 // Use the imported suggestions function
-                const results = await getCitySuggestions(inputRegion, 6);
+                const results = await getCitySuggestions(inputRegion, 100);
                 setSuggestions(results);
             }, 350); // small delay so it doesn't search on every keystroke
         } else {
@@ -98,11 +108,10 @@ export default function Home() {
     // Optional: Press Enter → take first suggestion
     const handleKeyDown = (e) => {
         if (e.key === "Enter" && suggestions.length > 0) {
-            handleSelectCity(suggestions[0]);
+            handleSelectCity(suggestions[onFocusSuggestion]);
         }
-    };
 
-    console.log(dailyDataState);
+    };
 
     return (
         <div className="home-container">
@@ -110,39 +119,34 @@ export default function Home() {
                 <h1>How's the sky looking today?</h1>
             </div>
 
-            <div className="home__search">
-                <div className="search-wrapper">
+            <div className="search-container">
+                <div className="search-input-wrapper">
+                    <span className="search-icon"><IoSearchOutline /></span>
                     <input
                         type="text"
+                        className="search-input"
+                        placeholder="Search for a place..."
                         value={inputRegion}
                         onChange={(e) => setInputRegion(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        placeholder="Search city (e.g. Tashkent, Berlin...)"
                     />
-
-                    {suggestions.length > 0 && (
-                        <ul className="suggestions-list">
-                            {suggestions.map((city, index) => (
-                                <li
-                                    key={index}
-                                    onClick={() => handleSelectCity(city)}
-                                    className="suggestion-item"
-                                >
-                                    {city.display}
-                                </li>
-                            ))}
-                        </ul>
-                    )}
                 </div>
 
-                <button
-                    type="button"
-                    onClick={() => {
-                        if (suggestions.length > 0) handleSelectCity(suggestions[0]);
-                    }}
-                >
-                    Search
-                </button>
+                <button className="search-button">Search</button>
+
+                {suggestions.length > 0 && (
+                    <ul className="suggestions-list">
+                        {suggestions.map((city, i) => (
+                            <li
+                                key={i}
+                                className="suggestion-item"
+                                onClick={() => handleSelectCity(city)}
+                                onFocus={i === onFocusSuggestion}
+                            >
+                                {city.display + " :" + i}
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </div>
 
             <div className="home__inner">
@@ -160,9 +164,13 @@ export default function Home() {
                         </>
                     )}
                 </div>
-
-                <div className="hourlyForecast-container">
-                </div>
+                {loading && <div className="loading">Loading hourly weather for {selectedCity.name}...</div>}
+                {error && <div className="error">Error: {error}</div>}
+                {hourlyDataState && !loading && !error && (
+                    <>
+                        <HourlyForecast data={hourlyDataState} />
+                    </>
+                )}
             </div>
         </div>
     );
