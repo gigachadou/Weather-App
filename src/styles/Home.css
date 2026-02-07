@@ -12,7 +12,7 @@
     display: flex;
     gap: 20px;
     height: 500px;
-    padding: 20px;
+    padding-bottom: 80px;
 }
 
 .home__left {
@@ -143,6 +143,7 @@
     display: flex;
     justify-content: space-between;
     gap: 16px;
+    flex-wrap: wrap;
 }
 
 .smallInfo__div {
@@ -151,9 +152,13 @@
     align-items: baseline;
     text-align: left;
     width: 25%;
-    background-color: var(--defaultBackground);
-    padding: 20px;
-    border-radius: var(--borderRadius);
+    background: rgba(40, 45, 70, 0.4);
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.2s ease;
+    min-width: 140px;
+    flex: 1 1 160px;
 }
 
 .smallInfo__label {
@@ -169,11 +174,17 @@
     font-size: 1.08rem;
 }
 
+.smallInfo__div:hover {
+    background: rgba(50, 60, 90, 0.55);
+    transform: translateX(4px);
+}
+
 /* Daily Forecast */
 
 .daily__inner {
     display: flex;
     gap: 8px;
+    flex-wrap: wrap;
 }
 
 h5 {
@@ -183,18 +194,27 @@ h5 {
 .daily__div {
     display: flex;
     flex-direction: column;
-    padding: 15px;
-    background-color: var(--defaultBackground);
-    border-radius: var(--borderRadius);
+    padding: 12px 16px;
+    background: rgba(40, 45, 70, 0.4);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     width: 14.2%;
     align-items: center;
     gap: 10px;
+    transition: all 0.2s ease;
+    min-width: 120px;
+    flex: 1 1 140px;
 }
 
 .daily__div-inner {
     display: flex;
     justify-content: space-between;
     width: 100%;
+}
+
+.daily__div:hover {
+    background: rgba(50, 60, 90, 0.55);
+    transform: translateX(4px);
 }
 
 /* Input element */
@@ -348,8 +368,6 @@ h5 {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
     color: white;
     width: 30%;
-    /* New: make it fill parent's height and scrollable */
-    height: 100%;
     overflow-y: auto;
     /* vertical scrollbar when content overflows */
     display: flex;
@@ -409,4 +427,83 @@ h5 {
 
 .hourly__container::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.35);
+}
+
+/* Responsive layout tweaks */
+@media (max-width: 1100px) {
+    .home__inner {
+        height: auto;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .home__left {
+        width: 100%;
+    }
+
+    .hourly__container {
+        width: 100%;
+        height: auto;
+        max-height: 420px;
+    }
+
+    .cityComponent {
+        min-width: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .home-container {
+        gap: 28px;
+        padding-top: 24px;
+    }
+
+    .home__inner {
+        padding: 16px;
+        gap: 16px;
+    }
+
+    .mainInfo {
+        padding: 40px 16px;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .mainInfo__div h2 {
+        font-size: 3rem;
+    }
+
+    .smallInfo__div {
+        flex: 1 1 45%;
+    }
+
+    .daily__div {
+        flex: 1 1 45%;
+    }
+}
+
+@media (max-width: 480px) {
+    .mainInfo__div svg {
+        width: 44px;
+        height: 44px;
+    }
+
+    .mainInfo__div h2 {
+        font-size: 2.6rem;
+    }
+
+    .smallInfo__div,
+    .daily__div {
+        flex: 1 1 100%;
+    }
+
+    .search-container {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .search-button {
+        width: 100%;
+        margin-left: 0;
+    }
 }
