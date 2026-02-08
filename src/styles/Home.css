@@ -228,6 +228,7 @@ h5 {
     max-width: 420px;
     margin: 0 auto;
     padding: 0 16px;
+    box-sizing: border-box;
 }
 
 /* The input field */
@@ -328,8 +329,7 @@ h5 {
     transition: background 0.15s ease;
 }
 
-.suggestion-item:hover,
-.suggestion-item:focus {
+.suggestion-item:hover {
     background: rgba(100, 150, 255, 0.15);
     color: white;
 }
@@ -372,6 +372,7 @@ h5 {
     /* vertical scrollbar when content overflows */
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
 }
 
 /* Make sure the title doesn't get pushed */
@@ -474,11 +475,15 @@ h5 {
     }
 
     .smallInfo__div {
-        flex: 1 1 45%;
+        flex: 1 1 calc(50% - 8px);
+        min-width: 120px;
+        padding: 10px 12px;
     }
 
     .daily__div {
-        flex: 1 1 45%;
+        flex: 1 1 calc(33.333% - 8px);
+        min-width: 100px;
+        padding: 10px 12px;
     }
 }
 
@@ -492,9 +497,16 @@ h5 {
         font-size: 2.6rem;
     }
 
-    .smallInfo__div,
+    .smallInfo__div {
+        flex: 1 1 calc(50% - 8px);
+        min-width: 110px;
+        padding: 8px 10px;
+    }
+
     .daily__div {
-        flex: 1 1 100%;
+        flex: 1 1 calc(33.333% - 6px);
+        min-width: 90px;
+        padding: 8px 10px;
     }
 
     .search-container {

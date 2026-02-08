@@ -18,64 +18,9 @@ export default function Home() {
         lat: 52.52,
         lon: 13.41
     });
-    const [currentDataState, setCurrentDataState] = useState(null);
-    const [dailyDataState, setDailyDataState] = useState(null);
-    const [hourlyDataState, setHourlyDataState] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [onFocusSuggestion, setOnFocusSuggestion] = useState(0);
+    // const [loading, setLoading] = useState(true);
+    // const [error, setError] = useState(null);
 
-    // Fetch weather whenever selected city changes
-    useEffect(() => {
-        let isMounted = true;
-
-        async function loadWeather() {
-            if (!selectedCity.lat || !selectedCity.lon) {
-                setError("No location selected");
-                setLoading(false);
-                return;
-            }
-
-            setLoading(true);
-            setError(null);
-
-            try {
-                const [currentData, dailyData, hourlyData] = await Promise.all([
-                    getCurrentAPI({
-                        latitude: selectedCity.lat,
-                        longitude: selectedCity.lon,
-                        cityName: selectedCity.name
-                    }),
-                    getDailyAPI({
-                        latitude: selectedCity.lat,
-                        longitude: selectedCity.lon
-                    }),
-                    getHourlyAPI({
-                        latitude: selectedCity.lat,
-                        longitude: selectedCity.lon
-                    })
-                ]);
-                console.log(hourlyData);
-                if (isMounted) {
-                    setCurrentDataState({ data: currentData, cityName: selectedCity.name });
-                    setDailyDataState(dailyData);
-                    setHourlyDataState(hourlyData);
-                }
-            } catch (err) {
-                if (isMounted) {
-                    setError(err.message);
-                }
-            } finally {
-                if (isMounted) setLoading(false);
-            }
-        }
-
-        loadWeather();
-
-        return () => {
-            isMounted = false;
-        };
-    }, [selectedCity]);
 
     // Show suggestions when user types
     useEffect(() => {
@@ -101,20 +46,19 @@ export default function Home() {
             lat: city.lat,
             lon: city.lon
         });
-        setInputRegion(city.name);     // show selected city in the input
+        setInputRegion("");     // show selected city in the input
         setSuggestions([]);            // hide the dropdown
     };
 
     // Optional: Press Enter → take first suggestion
     const handleKeyDown = (e) => {
         if (e.key === "Enter" && suggestions.length > 0) {
-            handleSelectCity(suggestions[onFocusSuggestion]);
+            handleSelectCity(suggestions[0]);
         }
-
     };
 
     return (
-        <div className="home-container">
+        <div className="home-container" onKeyDown={handleKeyDown}>
             <div className="home__h1">
                 <h1>How's the sky looking today?</h1>
             </div>
@@ -140,9 +84,8 @@ export default function Home() {
                                 key={i}
                                 className="suggestion-item"
                                 onClick={() => handleSelectCity(city)}
-                                onFocus={i === onFocusSuggestion}
                             >
-                                {city.display + " :" + i}
+                                {city.display}
                             </li>
                         ))}
                     </ul>
@@ -151,26 +94,10 @@ export default function Home() {
 
             <div className="home__inner">
                 <div className="home__left">
-                    {loading && <div className="loading">Loading weather for {selectedCity.name}...</div>}
-                    {error && <div className="error">Error: {error}</div>}
-
-                    {currentDataState && dailyDataState && !loading && !error && (
-                        <>
-                            <CityComponent
-                                data={currentDataState.data}
-                                cityName={currentDataState.cityName}
-                            />
-                            <DailyForecast data={dailyDataState} />
-                        </>
-                    )}
+                    <CityComponent selectedCity={selectedCity} />
+                    <DailyForecast selectedCity={selectedCity} />
                 </div>
-                {loading && <div className="loading">Loading hourly weather for {selectedCity.name}...</div>}
-                {error && <div className="error">Error: {error}</div>}
-                {hourlyDataState && !loading && !error && (
-                    <>
-                        <HourlyForecast data={hourlyDataState} />
-                    </>
-                )}
+                <HourlyForecast selectedCity={selectedCity} />
             </div>
         </div>
     );
