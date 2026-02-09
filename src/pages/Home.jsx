@@ -62,7 +62,7 @@ export default function Home() {
             lon: city.lon,
             country: city.country || ""
         });
-        setInputRegion(city.name);
+        setInputRegion("");
         setSuggestions([]);
         setError(null);
     };
