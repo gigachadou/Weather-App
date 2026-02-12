@@ -1,9 +1,4 @@
-export default async function getHourlyAPI({ latitude, longitude, timezone = "auto", hoursToReturn = 24 } = {}) {
-    if (typeof latitude !== "number" || typeof longitude !== "number") {
-        console.warn("latitude yoki longitude kiritilmagan");
-        return { data: [], units: {} };
-    }
-
+export default async function getHourlyAPI({ latitude, longitude, timezone = "auto", hoursToReturn = 168 } = {}) {
     try {
         const url = `https://api.open-meteo.com/v1/forecast?` +
             `latitude=${latitude}&` +
@@ -14,23 +9,21 @@ export default async function getHourlyAPI({ latitude, longitude, timezone = "au
         const res = await fetch(url);
 
         if (!res.ok) {
-            throw new Error(`API xatosi: ${res.status}`);
-        }
+            throw new Error(`${res.status}`);
+        };
 
         const json = await res.json();
 
-        if (!json.hourly?.time) {
-            return { data: [], units: {} };
-        }
+        console.log(json);
 
         const data = json.hourly.time.map((time, i) => ({
-            time,
-            temp: Math.round(json.hourly.temperature_2m?.[i] ?? 0),
-            feelsLike: Math.round(json.hourly.apparent_temperature?.[i] ?? 0),
-            humidity: json.hourly.relative_humidity_2m?.[i] ?? 0,
-            precipitation: json.hourly.precipitation?.[i] ?? 0,
-            weatherCode: json.hourly.weather_code?.[i] ?? 0,
-            windSpeed: Math.round(json.hourly.wind_speed_10m?.[i] ?? 0)
+            time: time,
+            temp: Math.round(json.hourly.temperature_2m[i]),
+            feelsLike: Math.round(json.hourly.apparent_temperature[i]),
+            humidity: json.hourly.relative_humidity_2m[i],
+            precipitation: json.hourly.precipitation[i],
+            weatherCode: json.hourly.weather_code[i],
+            windSpeed: Math.round(json.hourly.wind_speed_10m[i])
         })).slice(0, hoursToReturn);
 
         const units = {
@@ -44,7 +37,25 @@ export default async function getHourlyAPI({ latitude, longitude, timezone = "au
 
         return { data, units };
     } catch (error) {
-        console.error("Hourly ma'lumot olishda xato:", error);
-        return { data: [], units: {} };
+        console.error("Error at getting hourly forecast:", error.message);
+        return null;
     }
 }
+
+/**
+ * data:
+    * time
+    * temp
+    * feelsLike
+    * humidity
+    * precipitation
+    * weatherCode
+    * windSpeed
+ * units:
+    * temperature
+    * feelsLike
+    * humidity
+    * precipitation
+    * weatherCode
+    * windSpeed   
+ */

@@ -3,9 +3,9 @@ import "../styles/Home.css";
 import CityComponent from "../components/CityComponent";
 import DailyForecast from "../components/DailyForecast";
 import HourlyForecast from "../components/HourlyForecast";
-import getCitySuggestions from "../../utils/getCitySuggestion";
+import getCitySuggestions from "../../API_modules/getCitySuggestion";
 import { IoSearchOutline, IoLocationOutline } from "react-icons/io5";
-import getUserLocationWithCity from "../../utils/getUserLocationWithCity";
+import getUserLocationWithCity from "../../API_modules/getUserLocationWithCity";
 
 export default function Home() {
     const [inputRegion, setInputRegion] = useState("");
@@ -14,9 +14,7 @@ export default function Home() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    // Try to load location automatically on first mount (optional)
     useEffect(() => {
-        // You can comment this out if you only want manual trigger
         const tryAutoLocation = async () => {
             try {
                 setLoading(true);
@@ -25,7 +23,6 @@ export default function Home() {
                     setSelectedCity(location);
                 }
             } catch (err) {
-                // silently fail on mount – don't show error on first load
             } finally {
                 setLoading(false);
             }
@@ -34,7 +31,6 @@ export default function Home() {
         tryAutoLocation();
     }, []);
 
-    // Show suggestions when typing
     useEffect(() => {
         const timer = setTimeout(async () => {
             if (inputRegion.trim().length >= 2) {
@@ -52,7 +48,6 @@ export default function Home() {
         return () => clearTimeout(timer);
     }, [inputRegion]);
 
-    // Handle selecting a city from suggestions
     const handleSelectCity = (city) => {
         if (!city?.lat || !city?.lon) return;
 
@@ -67,7 +62,6 @@ export default function Home() {
         setError(null);
     };
 
-    // Button handler – ask for location again
     const handleUseMyLocation = async () => {
         setLoading(true);
         setError(null);
@@ -75,23 +69,23 @@ export default function Home() {
         try {
             const location = await getUserLocationWithCity();
 
-            if (location?.lat && location?.lon) {
-                setSelectedCity(location);
-                setInputRegion(location.name || "Your location");
-                setError(null);
-            } else {
-                setError("Could not get location data");
-            }
+            setSelectedCity(location);
+            setInputRegion(location.name);
+            setError(null);
+
         } catch (err) {
-            // Most common: user denied permission
             if (err.code === 1) {
-                setError("Location permission was denied. Please allow it in your browser settings.");
+                setError("Location permission was denied. Please allow it in browser settings.");
+            } else if (err.code === 2) {
+                setError("Location unavailable.");
+            } else if (err.code === 3) {
+                setError("Location request timed out.");
             } else {
-                setError(err.message || "Could not access your location");
+                setError(err.message || "Could not access your location.");
             }
         } finally {
             setLoading(false);
-        }
+        };
     };
 
     return (
@@ -120,7 +114,6 @@ export default function Home() {
                     Search
                 </button>
 
-                {/* New button – ask location again */}
                 <button
                     className="location-button"
                     onClick={handleUseMyLocation}
@@ -144,11 +137,9 @@ export default function Home() {
                 )}
             </div>
 
-            {/* Messages */}
             {loading && <div className="status-message loading">Detecting your location...</div>}
             {error && <div className="status-message error">{error}</div>}
 
-            {/* Weather content */}
             {selectedCity && selectedCity.lat && selectedCity.lon ? (
                 <div className="home__inner">
                     <div className="home__left">

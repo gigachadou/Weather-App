@@ -8,8 +8,6 @@ import {
     WiShowers,
     WiThunderstorm,
     WiSnow,
-    WiStrongWind,
-    WiNightCloudy,
     WiNightFog,
     WiNightShowers,
     WiNightRain,

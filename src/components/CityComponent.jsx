@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { IoSunnyOutline } from "react-icons/io5";
 import { WiNightClear } from "react-icons/wi";
-import getCurrentAPI from "../../utils/getCurrentAPI";
+import getCurrentAPI from "../../API_modules/getCurrentAPI";
 
 export default function CityComponent({ selectedCity }) {
     const [loading, setLoading] = useState(true);

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import getHourlyAPI from "../../utils/getHourlyAPI";
-import getWeatherIcon from "../../utils/getWeatherIcon"
+import getHourlyAPI from "../../API_modules/getHourlyAPI";
+import getWeatherIcon from "../../API_modules/getWeatherIcon"
 
 export default function HourlyForecast({ selectedCity }) {
     const [loading, setLoading] = useState(true);

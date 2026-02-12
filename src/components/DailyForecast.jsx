@@ -1,5 +1,5 @@
-import getDailyAPI from "../../utils/getDailyAPI";
-import getWeatherIcon from "../../utils/getWeatherIcon";
+import getDailyAPI from "../../API_modules/getDailyAPI";
+import getWeatherIcon from "../../API_modules/getWeatherIcon";
 import { useEffect, useState } from "react";
 
 
