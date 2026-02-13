@@ -35,5 +35,5 @@ export default async function getCurrentAPI({ latitude, longitude, cityName = "U
     } catch (error) {
         console.error("Error at getting current API:", error.message);
         return null;
-    }
-}
+    };
+};
