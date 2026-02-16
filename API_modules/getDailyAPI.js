@@ -14,8 +14,6 @@ export default async function getDailyAPI({ latitude, longitude, timezone = "aut
 
         const data = await res.json();
 
-        console.log(data);
-
         return data.daily.time.map((time, i) => {
             const date = new Date(time);
             const dayName = date.toLocaleDateString("en-US", { weekday: "short" });

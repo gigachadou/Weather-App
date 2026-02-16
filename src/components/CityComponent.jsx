@@ -59,7 +59,6 @@ export default function CityComponent({ selectedCity }) {
                             <div className="mainInfo__text">
                                 <h3>{data.cityName}</h3>
                                 <h3>{data.time?.split("T")[1]?.slice(0, 5) || "—"}</h3>
-                                {/* Shows time like "14:00" */}
                             </div>
 
                             <div className="mainInfo__div">
