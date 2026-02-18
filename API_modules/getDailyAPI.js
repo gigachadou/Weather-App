@@ -1,8 +1,9 @@
-export default async function getDailyAPI({ latitude, longitude, timezone = "auto" }) {
+export default async function getDailyAPI({ latitude, longitude, timezone = "auto", temp_unit = "celsius", wind_speed_unit = "kmh", precipitation_unit = "mm" }) {
     try {
         const url = `https://api.open-meteo.com/v1/forecast?` +
             `latitude=${latitude}&` +
             `longitude=${longitude}&` +
+            `temperature_unit=${temp_unit}&wind_speed_unit=${wind_speed_unit}&precipitation_unit=${precipitation_unit}&` +
             `daily=temperature_2m_max,temperature_2m_min,weather_code&` +
             `timezone=${timezone}`;
 

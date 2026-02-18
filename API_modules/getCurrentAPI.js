@@ -1,8 +1,9 @@
-export default async function getCurrentAPI({ latitude, longitude, cityName = "Unknown" }) {
+export default async function getCurrentAPI({ latitude, longitude, cityName = "Unknown", temp_unit = "celsius", wind_speed_unit = "kmh", precipitation_unit = "mm" }) {
     try {
         const url = `https://api.open-meteo.com/v1/forecast?` +
             `latitude=${latitude}&` +
             `longitude=${longitude}&` +
+            `temperature_unit=${temp_unit}&wind_speed_unit=${wind_speed_unit}&precipitation_unit=${precipitation_unit}&` +
             `current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,wind_speed_10m,is_day&` +
             `timezone=auto`;
 
@@ -13,10 +14,9 @@ export default async function getCurrentAPI({ latitude, longitude, cityName = "U
         };
 
         const data = await res.json();
-
+        console.log(data);
         return {
             region: cityName,
-            country: "",
             time: data.current.time,
             temperature: Math.round(data.current.temperature_2m),
             windSpeed: Math.round(data.current.wind_speed_10m),

@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { IoSunnyOutline } from "react-icons/io5";
 import { WiNightClear } from "react-icons/wi";
 import getCurrentAPI from "../../API_modules/getCurrentAPI";
+import { UnitsContext } from "../../context";
 
 export default function CityComponent({ selectedCity }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [data, setData] = useState(null);
+    const units = useContext(UnitsContext);
 
     useEffect(() => {
-        let isMounted = true;
-
         async function loadWeather() {
             if (!selectedCity.lat || !selectedCity.lon) {
                 setError("No location selected");
@@ -25,30 +25,24 @@ export default function CityComponent({ selectedCity }) {
                 const res = await getCurrentAPI({
                     latitude: selectedCity.lat,
                     longitude: selectedCity.lon,
-                    cityName: selectedCity.name
+                    cityName: selectedCity.name,
+                    temp_unit: units.temp,
+                    wind_speed_unit: units.windSpeed,
+                    precipitation_unit: units.precipitation
                 })
-                if (isMounted) {
-                    setData({ ...res, cityName: selectedCity.name });
 
-                }
+                setData({ ...res, cityName: selectedCity.name });
             } catch (err) {
-                if (isMounted) {
-                    setError(err.message);
-                }
+                setError(err.message);
             } finally {
-                if (isMounted) setLoading(false);
+                setLoading(false);
             }
         }
 
         loadWeather();
-
-        return () => {
-            isMounted = false;
-        };
-    }, [selectedCity]);
+    }, [selectedCity, units]);
 
     const isDay = !error && !loading ? data.is_day === 1 : null;
-
 
     return (
         (
@@ -57,7 +51,7 @@ export default function CityComponent({ selectedCity }) {
                     {!error && !loading && data && (
                         <>
                             <div className="mainInfo__text">
-                                <h3>{data.cityName}</h3>
+                                <h3>{selectedCity.name}, {selectedCity.country}</h3>
                                 <h3>{data.time?.split("T")[1]?.slice(0, 5) || "—"}</h3>
                             </div>
 
@@ -67,7 +61,7 @@ export default function CityComponent({ selectedCity }) {
                                 ) : (
                                     <WiNightClear color="#a0d2ff" size={48} />
                                 )}
-                                <h2>{Math.round(data.temperature)}°</h2>
+                                <h2>{Math.round(data.temperature)}{data.units.temperature}</h2>
                             </div>
                         </>
                     )}

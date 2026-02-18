@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import getHourlyAPI from "../../API_modules/getHourlyAPI";
 import getWeatherIcon from "../../API_modules/getWeatherIcon"
+import { UnitsContext } from "../../context";
 
 export default function HourlyForecast({ selectedCity }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [data, setData] = useState(null);
+    const units = useContext(UnitsContext);
 
     useEffect(() => {
-        let isMounted = true;
-
         async function loadWeather() {
             if (!selectedCity.lat || !selectedCity.lon) {
                 setError("No location selected");
@@ -23,32 +23,22 @@ export default function HourlyForecast({ selectedCity }) {
             try {
                 const dailyData = await getHourlyAPI({
                     latitude: selectedCity.lat,
-                    longitude: selectedCity.lon
+                    longitude: selectedCity.lon,
+                    temp_unit: units.temp,
+                    wind_speed_unit: units.windSpeed,
+                    precipitation_unit: units.precipitation
                 })
-                if (isMounted) {
-                    setData(dailyData);
-                }
+                setData(dailyData);
             } catch (err) {
-                if (isMounted) {
-                    setError(err.message);
-                }
+                setError(err.message);
             } finally {
-                if (isMounted) setLoading(false);
+                setLoading(false);
             }
         }
 
         loadWeather();
+    }, [selectedCity, units]);
 
-        return () => {
-            isMounted = false;
-        };
-    }, [selectedCity]);
-
-    function detectNight(time) {
-        if (time == "-") return false;
-        const hour = Number(time.slice(0, 2))
-        return (hour > 20 || hour < 7)
-    };
     return (
         <div className="hourly__container">
             <h5>Hourly forecast</h5>
@@ -58,7 +48,7 @@ export default function HourlyForecast({ selectedCity }) {
                 const time = e.time?.split("T")[1]?.slice(0, 5) || "—"
                 return (
                     <div className="hourly__div" key={i}>
-                        {getWeatherIcon(e.weatherCode, 36, "orange", detectNight(time))}
+                        {getWeatherIcon(e.weatherCode)}
                         <h5>{time}</h5>
                         <h5>{e.temp + " " + data.units.temperature}</h5>
                     </div>

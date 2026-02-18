@@ -22,15 +22,13 @@ export default async function getUserLocationWithCity() {
         throw new Error("Failed to fetch location data.");
     }
 
-    const geo = await res.json();
-
-    const result = geo.results[0];
+    const data = await res.json();
 
     return {
-        name: result.name,
-        lat: pos.lat,
-        lon: pos.lon,
-        country: result.country
+        name: data.results[0].name,
+        lat: data.results[0].lat,
+        lon: data.results[0].lon,
+        country: data.results[0].country
     };
 };
 

@@ -1,16 +1,16 @@
 import getDailyAPI from "../../API_modules/getDailyAPI";
 import getWeatherIcon from "../../API_modules/getWeatherIcon";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { UnitsContext } from "../../context";
 
 
 export default function DailyForecast({ selectedCity }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [data, setData] = useState(null);
+    const units = useContext(UnitsContext);
 
     useEffect(() => {
-        let isMounted = true;
-
         async function loadWeather() {
             if (!selectedCity.lat || !selectedCity.lon) {
                 setError("No location selected");
@@ -24,27 +24,22 @@ export default function DailyForecast({ selectedCity }) {
             try {
                 const dailyData = await getDailyAPI({
                     latitude: selectedCity.lat,
-                    longitude: selectedCity.lon
+                    longitude: selectedCity.lon,
+                    temp_unit: units.temp,
+                    wind_speed_unit: units.windSpeed,
+                    precipitation_unit: units.precipitation
                 })
-                if (isMounted) {
-                    setData(dailyData);
-                }
+                setData(dailyData);
             } catch (err) {
-                if (isMounted) {
-                    setError(err.message);
-                }
+                setError(err.message);
             } finally {
-                if (isMounted) setLoading(false);
+                setLoading(false);
             }
         }
 
         loadWeather();
-
-        return () => {
-            isMounted = false;
-        };
-    }, [selectedCity]);
-
+    }, [selectedCity, units]);
+    console.log(data);
     return (
         <div className="daily-container">
             <div className="daily__label">
@@ -57,7 +52,7 @@ export default function DailyForecast({ selectedCity }) {
                     return (
                         <div className="daily__div" key={day.day}>
                             <h5>{day.day}</h5>
-                            {getWeatherIcon(day.weatherCode, 36, "orange")}
+                            {getWeatherIcon(day.weatherCode)}
                             <div className="daily__div-inner">
                                 <h5 className="max-temp">{day.maxTemp}°</h5>
                                 <h5 className="min-temp">{day.minTemp}°</h5>
