@@ -371,15 +371,68 @@ h5 {
     box-sizing: border-box;
 }
 
+.hourly__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
 /* Make sure the title doesn't get pushed */
 .hourly__container h5 {
-    margin: 0 0 12px 0;
     font-size: 16px;
     font-weight: 600;
     opacity: 0.9;
     text-align: center;
     flex-shrink: 0;
     /* title doesn't shrink */
+}
+
+.hourly__header select {
+    /* Reset default browser styles */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    /* Layout & spacing */
+    padding: 8px 32px 8px 12px;
+    margin-left: 16px;
+
+    /* Typography */
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #e0e0e0;
+
+    /* Background & border */
+    background-color: #1e293b;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2 4L6 8L10 4' stroke='%239ca3af' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+
+    border: 1px solid #4b5563;
+    border-radius: 8px;
+
+    /* Hover & focus states */
+    cursor: pointer;
+    transition: all 0.12s ease;
+}
+
+.hourly__header select:hover {
+    background-color: #334155;
+    border-color: #64748b;
+}
+
+.hourly__header select:focus {
+    outline: none;
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+}
+
+/* Optional: make it look disabled when no options */
+.hourly__header select:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #1e293b;
 }
 
 /* The list of hours takes available space */
@@ -529,11 +582,11 @@ h5 {
 }
 
 @media (max-width: 790px) {
-    .smallInfo-container{
+    .smallInfo-container {
         flex-wrap: wrap;
     }
 
-    .smallInfo__div{
+    .smallInfo__div {
         width: 40%;
     }
 }
@@ -559,7 +612,7 @@ h5 {
         font-size: 3rem;
     }
 
-    .smallInfo__div {   
+    .smallInfo__div {
         min-width: 120px;
         padding: 10px 12px;
     }
@@ -602,7 +655,8 @@ h5 {
         width: 100%;
         margin-left: 0;
     }
-    .location-button{
+
+    .location-button {
         margin-left: 0;
     }
 

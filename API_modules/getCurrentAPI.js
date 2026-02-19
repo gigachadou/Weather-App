@@ -14,7 +14,6 @@ export default async function getCurrentAPI({ latitude, longitude, cityName = "U
         };
 
         const data = await res.json();
-        console.log(data);
         return {
             region: cityName,
             time: data.current.time,

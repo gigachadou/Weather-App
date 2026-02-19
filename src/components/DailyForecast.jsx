@@ -39,7 +39,6 @@ export default function DailyForecast({ selectedCity }) {
 
         loadWeather();
     }, [selectedCity, units]);
-    console.log(data);
     return (
         <div className="daily-container">
             <div className="daily__label">

@@ -8,7 +8,7 @@ export default function Header({ units, setUnits }) {
     const toggleDropdown = () => setIsOpen(prev => !prev);
 
     function handleChange(e) {
-        const { name, value } = e.target;
+        const { name, value } = e;
 
         setUnits(prev => ({
             ...prev,
@@ -42,14 +42,14 @@ export default function Header({ units, setUnits }) {
                                 <button
                                     type="button"
                                     className={`segment-btn ${units.temp === 'celsius' ? 'active' : ''}`}
-                                    onClick={() => handleChange({ target: { name: 'temp', value: 'celsius' } })}
+                                    onClick={() => handleChange({ name: 'temp', value: 'celsius' })}
                                 >
                                     °C
                                 </button>
                                 <button
                                     type="button"
                                     className={`segment-btn ${units.temp === 'fahrenheit' ? 'active' : ''}`}
-                                    onClick={() => handleChange({ target: { name: 'temp', value: 'fahrenheit' } })}
+                                    onClick={() => handleChange({ name: 'temp', value: 'fahrenheit' })}
                                 >
                                     °F
                                 </button>
@@ -61,14 +61,14 @@ export default function Header({ units, setUnits }) {
                                 <button
                                     type="button"
                                     className={`segment-btn ${units.windSpeed === 'kmh' ? 'active' : ''}`}
-                                    onClick={() => handleChange({ target: { name: 'windSpeed', value: 'kmh' } })}
+                                    onClick={() => handleChange({ name: 'windSpeed', value: 'kmh' })}
                                 >
                                     km/h
                                 </button>
                                 <button
                                     type="button"
                                     className={`segment-btn ${units.windSpeed === 'mph' ? 'active' : ''}`}
-                                    onClick={() => handleChange({ target: { name: 'windSpeed', value: 'mph' } })}
+                                    onClick={() => handleChange({ name: 'windSpeed', value: 'mph' })}
                                 >
                                     mph
                                 </button>
@@ -80,14 +80,14 @@ export default function Header({ units, setUnits }) {
                                 <button
                                     type="button"
                                     className={`segment-btn ${units.precipitation === 'mm' ? 'active' : ''}`}
-                                    onClick={() => handleChange({ target: { name: 'precipitation', value: 'mm' } })}
+                                    onClick={() => handleChange({ name: 'precipitation', value: 'mm' })}
                                 >
                                     mm
                                 </button>
                                 <button
                                     type="button"
                                     className={`segment-btn ${units.precipitation === 'inch' ? 'active' : ''}`}
-                                    onClick={() => handleChange({ target: { name: 'precipitation', value: 'inch' } })}
+                                    onClick={() => handleChange({ name: 'precipitation', value: 'inch' })}
                                 >
                                     in
                                 </button>

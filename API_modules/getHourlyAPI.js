@@ -1,4 +1,4 @@
-export default async function getHourlyAPI({ latitude, longitude, timezone = "auto", hoursToReturn = 24, temp_unit = "celsius", wind_speed_unit = "kmh", precipitation_unit = "mm" } = {}) {
+export default async function getHourlyAPI({ latitude, longitude, timezone = "auto", temp_unit = "celsius", wind_speed_unit = "kmh", precipitation_unit = "mm" } = {}) {
     try {
         const url = `https://api.open-meteo.com/v1/forecast?` +
             `latitude=${latitude}&` +
@@ -23,7 +23,7 @@ export default async function getHourlyAPI({ latitude, longitude, timezone = "au
             precipitation: json.hourly.precipitation[i],
             weatherCode: json.hourly.weather_code[i],
             windSpeed: Math.round(json.hourly.wind_speed_10m[i])
-        })).slice(0, hoursToReturn);
+        }));
 
         const units = {
             temperature: json.hourly_units.temperature_2m,

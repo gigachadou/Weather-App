@@ -6,7 +6,6 @@ import { UnitsContext } from "../context";
 export default function Root() {
     const [units, setUnits] = useState({ temp: "celsius", windSpeed: "kmh", precipitation: "mm" });
 
-    console.log(units)
     return (
         <div className="root-inner">
             <Header units={units} setUnits={setUnits} />
