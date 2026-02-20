@@ -48,7 +48,7 @@
     top: 100%;
     right: 0;
     margin-top: 8px;
-    background: rgba(28, 28, 38, 0.94);
+    background: rgba(28, 28, 38, 0.75);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-radius: 12px;

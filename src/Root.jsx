@@ -4,7 +4,7 @@ import { useState } from "react";
 import { UnitsContext } from "../context";
 
 export default function Root() {
-    const [units, setUnits] = useState({ temp: "celsius", windSpeed: "kmh", precipitation: "mm" });
+    const [units, setUnits] = useState({absolute: "metric", temp: "celsius", windSpeed: "kmh", precipitation: "mm" });
 
     return (
         <div className="root-inner">
