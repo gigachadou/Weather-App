@@ -5,8 +5,6 @@ import { useState } from "react";
 export default function Header({ units, setUnits }) {
     const [isOpen, setIsOpen] = useState(false);
 
-    const toggleDropdown = () => setIsOpen(prev => !prev);
-
     function handleChange(e) {
         const { name, value } = e;
 
@@ -27,9 +25,7 @@ export default function Header({ units, setUnits }) {
             <div className="units-dropdown-container">
                 <button
                     className={`units-trigger ${isOpen ? 'active' : ''}`}
-                    onClick={toggleDropdown}
-                    aria-expanded={isOpen}
-                    aria-haspopup="true"
+                    onClick={() => setIsOpen(prev => !prev)}
                 >
                     Units {isOpen ? '▲' : '▼'}
                 </button>
@@ -96,6 +92,6 @@ export default function Header({ units, setUnits }) {
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     );
 };
