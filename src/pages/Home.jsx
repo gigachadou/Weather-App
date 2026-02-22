@@ -13,6 +13,7 @@ export default function Home() {
     const [selectedCity, setSelectedCity] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [suggestionMsg, setSuggestionsMsg] = useState(null);
 
     useEffect(() => {
         const tryAutoLocation = async () => {
@@ -32,18 +33,29 @@ export default function Home() {
     }, []);
 
     useEffect(() => {
+        if (inputRegion.trim().length < 2) {
+            setSuggestions([]);
+            setSuggestionsMsg(null);
+            return;
+        }
+
+        setSuggestionsMsg("Loading...");
+
         const timer = setTimeout(async () => {
-            if (inputRegion.trim().length >= 2) {
-                try {
-                    const results = await getCitySuggestions(inputRegion, 8);
-                    setSuggestions(results || []);
-                } catch (err) {
+            try {
+                const results = await getCitySuggestions(inputRegion.trim(), 6);
+                if (results?.length > 0) {
+                    setSuggestions(results);
+                    setSuggestionsMsg(null);
+                } else {
                     setSuggestions([]);
+                    setSuggestionsMsg("No matching places found");
                 }
-            } else {
+            } catch (err) {
                 setSuggestions([]);
+                setSuggestionsMsg("Couldn't load suggestions");
             }
-        }, 400);
+        }, 100);
 
         return () => clearTimeout(timer);
     }, [inputRegion]);
@@ -124,6 +136,7 @@ export default function Home() {
 
                 {suggestions.length > 0 && (
                     <ul className="suggestions-list">
+                        {suggestionMsg && <li className="suggestion-item">{suggestionMsg}</li>}
                         {suggestions.map((city, i) => (
                             <li
                                 key={i}
