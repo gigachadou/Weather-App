@@ -1,40 +1,47 @@
 export default async function getUserLocationWithCity() {
     if (!navigator.geolocation) {
-        throw new Error("Geolocation is not supported by your browser.");
+        throw new Error("Geolocation not supported");
     }
 
-    const pos = await new Promise((resolve, reject) => {
+    const { lat, lon } = await new Promise((resolve, reject) =>
         navigator.geolocation.getCurrentPosition(
-            position => resolve({
-                lat: position.coords.latitude,
-                lon: position.coords.longitude
-            }),
-            error => reject(error),
+            pos => resolve({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
+            err => reject(new Error("Location access denied or failed")),
             { enableHighAccuracy: true }
-        );
+        )
+    );
+
+    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10&addressdetails=1`;
+
+    const res = await fetch(url, {
+        headers: {
+            "User-Agent": "https://weather-app-98f.pages.dev (axmedovaasira@gmail.com)"
+        }
     });
 
-    const url = `https://geocoding-api.open-meteo.com/v1/reverse?latitude=${pos.lat}&longitude=${pos.lon}&count=1`;
-
-    const res = await fetch(url);
-
     if (!res.ok) {
-        throw new Error("Failed to fetch location data.");
+        throw new Error("Geocoding service error");
     }
 
     const data = await res.json();
 
-    return {
-        name: data.results[0].name,
-        lat: data.results[0].lat,
-        lon: data.results[0].lon,
-        country: data.results[0].country
-    };
-};
+    if (!data?.address) {
+        throw new Error("No location info found");
+    }
 
-/**
- * name
- * lat
- * lon
- * country
- */
+    const address = data.address;
+
+    const name =
+        address.city ||
+        address.town ||
+        address.village ||
+        address.state ||
+        "Unknown";
+
+    return {
+        name,
+        lat: Number(data.lat),
+        lon: Number(data.lon),
+        country: address.country || "Unknown"
+    };
+}

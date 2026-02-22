@@ -48,6 +48,14 @@ export default function CityComponent({ selectedCity }) {
         (
             <div className="cityComponent">
                 <div className="mainInfo">
+                    {loading && (
+                        <div className="city-loading-main">
+                            <div className="loading-line loading-line--lg" />
+                            <div className="loading-line loading-line--sm" />
+                            <div className="loading-temp" />
+                        </div>
+                    )}
+
                     {!error && !loading && data && (
                         <>
                             <div className="mainInfo__text">
@@ -66,6 +74,27 @@ export default function CityComponent({ selectedCity }) {
                         </>
                     )}
                 </div>
+
+                {loading && (
+                    <div className="smallInfo-container">
+                        <div className="smallInfo__div morph city-loading-card">
+                            <div className="loading-line loading-line--xs" />
+                            <div className="loading-line loading-line--md" />
+                        </div>
+                        <div className="smallInfo__div morph city-loading-card">
+                            <div className="loading-line loading-line--xs" />
+                            <div className="loading-line loading-line--md" />
+                        </div>
+                        <div className="smallInfo__div morph city-loading-card">
+                            <div className="loading-line loading-line--xs" />
+                            <div className="loading-line loading-line--md" />
+                        </div>
+                        <div className="smallInfo__div morph city-loading-card">
+                            <div className="loading-line loading-line--xs" />
+                            <div className="loading-line loading-line--md" />
+                        </div>
+                    </div>
+                )}
 
                 {!loading && !error && data && (<div className="smallInfo-container">
                     <div className="smallInfo__div morph">

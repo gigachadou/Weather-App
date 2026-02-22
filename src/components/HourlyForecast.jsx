@@ -92,8 +92,14 @@ export default function HourlyForecast({ selectedCity }) {
             </div>
 
             {loading && (
-                <div className="loading">
-                    Loading hourly weather for {selectedCity.name || "…"}...
+                <div className="hourly-loading-list">
+                    {Array.from({ length: 6 }).map((_, index) => (
+                        <div className="hourly__div hourly-loading-row" key={index}>
+                            <div className="hourly-loading-icon" />
+                            <div className="loading-line loading-line--hourly-time" />
+                            <div className="loading-line loading-line--hourly-temp" />
+                        </div>
+                    ))}
                 </div>
             )}
 
@@ -119,3 +125,4 @@ export default function HourlyForecast({ selectedCity }) {
         </div>
     );
 }
+

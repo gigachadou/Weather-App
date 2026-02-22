@@ -44,7 +44,20 @@ export default function DailyForecast({ selectedCity }) {
             <div className="daily__label">
                 <h4>Daily forecast</h4>
             </div>
-            {loading && <div className="loading">Loading hourly weather for {selectedCity.name}...</div>}
+            {loading && (
+                <div className="daily__inner">
+                    {Array.from({ length: 6 }).map((_, index) => (
+                        <div className="daily__div daily-loading-card" key={index}>
+                            <div className="loading-line loading-line--daily-day" />
+                            <div className="daily-loading-icon" />
+                            <div className="daily__div-inner">
+                                <div className="loading-line loading-line--daily-temp" />
+                                <div className="loading-line loading-line--daily-temp" />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
             {error && <div className="error">Error: {error}</div>}
             {!loading && !error && data && (<div className="daily__inner">
                 {data.map(day => {
