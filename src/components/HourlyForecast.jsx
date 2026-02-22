@@ -103,7 +103,14 @@ export default function HourlyForecast({ selectedCity }) {
                 </div>
             )}
 
-            {error && <div className="error">Error: {error}</div>}
+            {error && !loading && (
+                <div className="hourly-error-list">
+                    <div className="hourly__div hourly-error-row">Could not load hourly forecast</div>
+                    <div className="hourly__div hourly-error-row">{error}</div>
+                    <div className="hourly__div hourly-error-row">Try selecting another city</div>
+                    <div className="hourly__div hourly-error-row">Data unavailable</div>
+                </div>
+            )}
 
             {!loading && !error && selectedDayData.length > 0 && (
                 <div className="hourly-items">
@@ -125,4 +132,3 @@ export default function HourlyForecast({ selectedCity }) {
         </div>
     );
 }
-

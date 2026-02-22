@@ -6,7 +6,7 @@ export default async function getUserLocationWithCity() {
     const { lat, lon } = await new Promise((resolve, reject) =>
         navigator.geolocation.getCurrentPosition(
             pos => resolve({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
-            err => reject(new Error("Location access denied or failed")),
+            () => reject(new Error("Location access denied or failed")),
             { enableHighAccuracy: true }
         )
     );

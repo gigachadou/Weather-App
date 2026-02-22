@@ -793,3 +793,75 @@ h5 {
     width: 38%;
     height: 16px;
 }
+.city-error-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 98px;
+    gap: 8px;
+}
+
+.city-error-main h3 {
+    margin: 0;
+    font-size: 1.22rem;
+    font-weight: 600;
+    color: #fecaca;
+}
+
+.city-error-main p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #fee2e2;
+    opacity: 0.95;
+}
+
+.city-error-card {
+    justify-content: center;
+    border-color: rgba(252, 165, 165, 0.25);
+    background: rgba(127, 29, 29, 0.2);
+    min-height: 84px;
+}
+
+.city-error-card .smallInfo__label {
+    color: #fecaca;
+    opacity: 0.9;
+}
+
+.city-error-card .smallInfo__info {
+    color: #fee2e2;
+}
+
+.hourly-error-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.hourly-error-row {
+    min-height: 46px;
+    align-items: center;
+    justify-content: center;
+    color: #fee2e2;
+    background: rgba(127, 29, 29, 0.18);
+    border: 1px solid rgba(252, 165, 165, 0.22);
+}
+
+.daily-error-card {
+    justify-content: center;
+    min-height: 116px;
+    border-color: rgba(252, 165, 165, 0.22);
+    background: rgba(127, 29, 29, 0.2);
+}
+
+.daily-error-title {
+    font-size: 0.86rem;
+    color: #fecaca;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.daily-error-text {
+    font-size: 0.95rem;
+    color: #fee2e2;
+    text-align: center;
+}

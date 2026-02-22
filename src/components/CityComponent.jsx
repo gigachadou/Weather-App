@@ -56,6 +56,13 @@ export default function CityComponent({ selectedCity }) {
                         </div>
                     )}
 
+                    {error && !loading && (
+                        <div className="city-error-main">
+                            <h3>Could not load weather</h3>
+                            <p>{error}</p>
+                        </div>
+                    )}
+
                     {!error && !loading && data && (
                         <>
                             <div className="mainInfo__text">
@@ -92,6 +99,27 @@ export default function CityComponent({ selectedCity }) {
                         <div className="smallInfo__div morph city-loading-card">
                             <div className="loading-line loading-line--xs" />
                             <div className="loading-line loading-line--md" />
+                        </div>
+                    </div>
+                )}
+
+                {error && !loading && (
+                    <div className="smallInfo-container">
+                        <div className="smallInfo__div morph city-error-card">
+                            <div className="smallInfo__label">Status</div>
+                            <div className="smallInfo__info">Unavailable</div>
+                        </div>
+                        <div className="smallInfo__div morph city-error-card">
+                            <div className="smallInfo__label">Status</div>
+                            <div className="smallInfo__info">Unavailable</div>
+                        </div>
+                        <div className="smallInfo__div morph city-error-card">
+                            <div className="smallInfo__label">Status</div>
+                            <div className="smallInfo__info">Unavailable</div>
+                        </div>
+                        <div className="smallInfo__div morph city-error-card">
+                            <div className="smallInfo__label">Status</div>
+                            <div className="smallInfo__info">Unavailable</div>
                         </div>
                     </div>
                 )}

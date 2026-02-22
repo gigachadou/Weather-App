@@ -39,3 +39,53 @@
 .read-the-docs {
   color: #888;
 }
+
+.root-error-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding: 20px 0;
+}
+
+.root-error-card {
+  width: min(680px, 100%);
+  background: rgba(30, 35, 60, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  padding: 28px 26px;
+  color: #fff;
+}
+
+.root-error-card h2 {
+  margin: 0 0 8px;
+  font-size: 1.45rem;
+  font-weight: 650;
+  color: #ffffff;
+  opacity: 0.95;
+}
+
+.root-error-card p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.45;
+  color: #e0e0ff;
+}
+
+.root-error-button {
+  margin-top: 18px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.root-error-button:hover {
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.45);
+  background: linear-gradient(135deg, #7c3aed, #a78bfa);
+}

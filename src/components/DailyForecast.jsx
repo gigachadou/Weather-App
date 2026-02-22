@@ -58,7 +58,16 @@ export default function DailyForecast({ selectedCity }) {
                     ))}
                 </div>
             )}
-            {error && <div className="error">Error: {error}</div>}
+            {error && !loading && (
+                <div className="daily__inner">
+                    {Array.from({ length: 6 }).map((_, index) => (
+                        <div className="daily__div daily-error-card" key={index}>
+                            <div className="daily-error-title">Forecast unavailable</div>
+                            <div className="daily-error-text">{index === 0 ? error : "No data"}</div>
+                        </div>
+                    ))}
+                </div>
+            )}
             {!loading && !error && data && (<div className="daily__inner">
                 {data.map(day => {
                     return (
@@ -76,4 +85,3 @@ export default function DailyForecast({ selectedCity }) {
         </div>
     );
 }
-

@@ -13,11 +13,11 @@ export default async function getCitySuggestions(query, maxResults = 6, language
 
         const data = await res.json();
 
-        if (data.results.length === 0) {
+        if (data.results?.length === 0) {
             return [];
         };
 
-        return data.results.map(city => ({
+        return data.results?.map(city => ({
             name: city.name,
             country: city.country,
             lat: city.latitude,

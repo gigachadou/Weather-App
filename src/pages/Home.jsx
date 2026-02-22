@@ -9,7 +9,7 @@ import getUserLocationWithCity from "../../API_modules/getUserLocationWithCity";
 
 export default function Home() {
     const [inputRegion, setInputRegion] = useState("");
-    const [suggestions, setSuggestions] = useState([]);
+    const [suggestions, setSuggestions] = useState(null);
     const [selectedCity, setSelectedCity] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -24,20 +24,21 @@ export default function Home() {
                     setSelectedCity(location);
                 }
             } catch (err) {
+                console.log(err?.message);
             } finally {
                 setLoading(false);
-            }
+            };
         };
-
+        
         tryAutoLocation();
     }, []);
 
     useEffect(() => {
         if (inputRegion.trim().length < 2) {
-            setSuggestions([]);
+            setSuggestions(null);
             setSuggestionsMsg(null);
             return;
-        }
+        };
 
         setSuggestionsMsg("Loading...");
 
@@ -53,7 +54,7 @@ export default function Home() {
                 }
             } catch (err) {
                 setSuggestions([]);
-                setSuggestionsMsg("Couldn't load suggestions");
+                setSuggestionsMsg("Couldn't load suggestions" + err?.message);
             }
         }, 100);
 
@@ -134,7 +135,7 @@ export default function Home() {
                     {loading ? "Detecting..." : <><IoLocationOutline /> Use my location</>}
                 </button>
 
-                {suggestions.length > 0 && (
+                {suggestions && (
                     <ul className="suggestions-list">
                         {suggestionMsg && <li className="suggestion-item">{suggestionMsg}</li>}
                         {suggestions.map((city, i) => (
