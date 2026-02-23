@@ -29,7 +29,7 @@ export default function Home() {
                 setLoading(false);
             };
         };
-        
+
         tryAutoLocation();
     }, []);
 
@@ -83,9 +83,7 @@ export default function Home() {
             const location = await getUserLocationWithCity();
 
             setSelectedCity(location);
-            setInputRegion(location.name);
             setError(null);
-
         } catch (err) {
             if (err.code === 1) {
                 setError("Location permission was denied. Please allow it in browser settings.");

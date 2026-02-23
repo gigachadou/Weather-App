@@ -11,7 +11,7 @@ export default async function getUserLocationWithCity() {
         )
     );
 
-    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10&addressdetails=1`;
+    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1`;
 
     const res = await fetch(url, {
         headers: {
