@@ -1,10 +1,10 @@
-export default async function getHourlyAPI({ latitude, longitude, timezone = "auto", temp_unit = "celsius", wind_speed_unit = "kmh", precipitation_unit = "mm" } = {}) {
+export default async function getHourlyAPI({ latitude, longitude, timezone = "auto", temp_unit = "celsius", wind_speed_unit = "kmh", precipitation_unit = "mm" }) {
     try {
         const url = `https://api.open-meteo.com/v1/forecast?` +
             `latitude=${latitude}&` +
             `longitude=${longitude}&` +
             `temperature_unit=${temp_unit}&wind_speed_unit=${wind_speed_unit}&precipitation_unit=${precipitation_unit}&` +
-            `hourly=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&` +
+            `hourly=temperature_2m,relative_humidity_2m,dew_point_2m,apparent_temperature,precipitation_probability,precipitation,weather_code,visibility,wind_speed_10m&` +
             `timezone=${encodeURIComponent(timezone)}`;
 
         const res = await fetch(url);
@@ -22,15 +22,16 @@ export default async function getHourlyAPI({ latitude, longitude, timezone = "au
             humidity: json.hourly.relative_humidity_2m[i],
             precipitation: json.hourly.precipitation[i],
             weatherCode: json.hourly.weather_code[i],
-            windSpeed: Math.round(json.hourly.wind_speed_10m[i])
+            windSpeed: Math.round(json.hourly.wind_speed_10m[i]),
+            precipitationProb: json.hourly.precipitation_probability[i],
+            dewPoint: json.hourly.dew_point_2m[i],
+            visibility: (json.hourly.visibility[i] / 1000),
         }));
 
         const units = {
             temperature: json.hourly_units.temperature_2m,
-            feelsLike: json.hourly_units.apparent_temperature,
             humidity: json.hourly_units.relative_humidity_2m,
             precipitation: json.hourly_units.precipitation,
-            weatherCode: json.hourly_units.weather_code,
             windSpeed: json.hourly_units.wind_speed_10m
         };
 

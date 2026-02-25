@@ -14,7 +14,7 @@ export default async function getDailyAPI({ latitude, longitude, timezone = "aut
         }
 
         const data = await res.json();
-        console.log(data);
+
         return data.daily.time.map((time, i) => {
             const date = new Date(time);
             const dayName = date.toLocaleDateString("en-US", { weekday: "short" });
@@ -45,39 +45,3 @@ export default async function getDailyAPI({ latitude, longitude, timezone = "aut
         return null;
     };
 };
-
-//daily_units
-/*
-apparent_temperature_max
-: 
-"°C"
-apparent_temperature_min
-: 
-"°C"
-sunrise
-: 
-"iso8601"
-sunset
-: 
-"iso8601"
-temperature_2m_max
-: 
-"°C"
-temperature_2m_min
-: 
-"°C"
-time
-: 
-"iso8601"
-uv_index_max
-: 
-""
-weather_code
-: 
-"wmo code"
-wind_direction_10m_dominant
-: 
-"°"
-wind_speed_10m_max
-: 
-"km/h" */

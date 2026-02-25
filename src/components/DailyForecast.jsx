@@ -42,7 +42,6 @@ export default function DailyForecast({ selectedCity }) {
 
         loadWeather();
     }, [selectedCity, units]);
-    console.log(data);
     return (
         <>
             <DailyModal ref={modalRef} info={modalArgs.info} title={modalArgs.title} />
