@@ -1,16 +1,17 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import getHourlyAPI from "../../API_modules/getHourlyAPI";
 import getWeatherIcon from "../../API_modules/getWeatherIcon";
 import { UnitsContext } from "../../context";
+import HourlyModal from "./HourlyModal";
 
 export default function HourlyForecast({ selectedCity }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [forecastData, setForecastData] = useState(null);
     const [selectedDay, setSelectedDay] = useState(null);
-
+    const [modalArgs, setModalArgs] = useState({ info: null, title: null });
     const units = useContext(UnitsContext);
-
+    const modalRef = useRef(null);
     useEffect(() => {
         async function loadWeather() {
             if (!selectedCity?.lat || !selectedCity?.lon) {
@@ -73,62 +74,65 @@ export default function HourlyForecast({ selectedCity }) {
     const selectedDayData = forecastData && selectedDay ? forecastData.data[selectedDay] : [];
 
     return (
-        <div className="hourly__container">
-            <div className="hourly__header">
-                <h5>Hourly forecast</h5>
+        <>
+            <HourlyModal ref={modalRef} info={modalArgs.info} title={modalArgs.title} />
+            <div className="hourly__container">
+                <div className="hourly__header">
+                    <h5>Hourly forecast</h5>
 
-                {!error && !loading && forecastData?.days?.length > 0 && (
-                    <select
-                        value={selectedDay || ""}
-                        onChange={(e) => setSelectedDay(e.target.value)}
-                    >
-                        {forecastData.days.map((day) => (
-                            <option key={day} value={day}>
-                                {day}
-                            </option>
+                    {!error && !loading && forecastData?.days?.length > 0 && (
+                        <select
+                            value={selectedDay || ""}
+                            onChange={(e) => setSelectedDay(e.target.value)}
+                        >
+                            {forecastData.days.map((day) => (
+                                <option key={day} value={day}>
+                                    {day}
+                                </option>
+                            ))}
+                        </select>
+                    )}
+                </div>
+
+                {loading && (
+                    <div className="hourly-loading-list">
+                        {Array.from({ length: 6 }).map((_, index) => (
+                            <div className="hourly__div hourly-loading-row" key={index}>
+                                <div className="hourly-loading-icon" />
+                                <div className="loading-line loading-line--hourly-time" />
+                                <div className="loading-line loading-line--hourly-temp" />
+                            </div>
                         ))}
-                    </select>
+                    </div>
+                )}
+
+                {error && !loading && (
+                    <div className="hourly-error-list">
+                        <div className="hourly__div hourly-error-row">Could not load hourly forecast</div>
+                        <div className="hourly__div hourly-error-row">{error}</div>
+                        <div className="hourly__div hourly-error-row">Try selecting another city</div>
+                        <div className="hourly__div hourly-error-row">Data unavailable</div>
+                    </div>
+                )}
+
+                {!loading && !error && selectedDayData.length > 0 && (
+                    <div className="hourly-items">
+                        {selectedDayData.map((hour, index) => {
+                            const time = hour.time.split("T")[1].slice(0, 5) || "—";
+                            const date = (new Date(hour.time.split("T")[0])).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+                            return (
+                                <div className="hourly__div" key={index} onClick={() => { setModalArgs({ info: { ...hour, units: forecastData.units }, title: `Weather info for ${date}|${time}` }); modalRef.current.showModal(); }}>
+                                    {getWeatherIcon(hour.weatherCode)}
+                                    <h5>{time}</h5>
+                                    <h5>
+                                        {hour.temp} {forecastData.units.temperature}
+                                    </h5>
+                                </div>
+                            );
+                        })}
+                    </div>
                 )}
             </div>
-
-            {loading && (
-                <div className="hourly-loading-list">
-                    {Array.from({ length: 6 }).map((_, index) => (
-                        <div className="hourly__div hourly-loading-row" key={index}>
-                            <div className="hourly-loading-icon" />
-                            <div className="loading-line loading-line--hourly-time" />
-                            <div className="loading-line loading-line--hourly-temp" />
-                        </div>
-                    ))}
-                </div>
-            )}
-
-            {error && !loading && (
-                <div className="hourly-error-list">
-                    <div className="hourly__div hourly-error-row">Could not load hourly forecast</div>
-                    <div className="hourly__div hourly-error-row">{error}</div>
-                    <div className="hourly__div hourly-error-row">Try selecting another city</div>
-                    <div className="hourly__div hourly-error-row">Data unavailable</div>
-                </div>
-            )}
-
-            {!loading && !error && selectedDayData.length > 0 && (
-                <div className="hourly-items">
-                    {selectedDayData.map((hour, index) => {
-                        const time = hour.time?.split("T")?.[1]?.slice(0, 5) || "—";
-
-                        return (
-                            <div className="hourly__div" key={index}>
-                                {getWeatherIcon(hour.weatherCode)}
-                                <h5>{time}</h5>
-                                <h5>
-                                    {hour.temp} {forecastData.units.temperature}
-                                </h5>
-                            </div>
-                        );
-                    })}
-                </div>
-            )}
-        </div>
+        </>
     );
 }
