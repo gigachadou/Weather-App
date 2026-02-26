@@ -6,15 +6,16 @@ import HourlyForecast from "../components/HourlyForecast";
 import getCitySuggestions from "../../API_modules/getCitySuggestion";
 import { IoSearchOutline, IoLocationOutline } from "react-icons/io5";
 import getUserLocationWithCity from "../../API_modules/getUserLocationWithCity";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function Home() {
     const [inputRegion, setInputRegion] = useState("");
     const [suggestions, setSuggestions] = useState(null);
-    const [selectedCity, setSelectedCity] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [suggestionMsg, setSuggestionsMsg] = useState(null);
-
+    const { selectedCity, setSelectedCity } = useOutletContext();
+    const navigate = useNavigate();
     useEffect(() => {
         const tryAutoLocation = async () => {
             try {
@@ -119,10 +120,8 @@ export default function Home() {
                     />
                 </div>
 
-                <button className="search-button" onClick={() => {
-                    if (suggestions.length > 0) handleSelectCity(suggestions[0]);
-                }}>
-                    Search
+                <button className="search-button" onClick={() => {navigate("/map")}}>
+                    Open Map
                 </button>
 
                 <button
