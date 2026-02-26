@@ -5,6 +5,7 @@ import { UnitsContext } from "../context";
 
 export default function Root() {
     const [units, setUnits] = useState({ absolute: "metric", temp: "celsius", windSpeed: "kmh", precipitation: "mm" });
+    const [selectedCity, setSelectedCity] = useState(null);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -29,7 +30,7 @@ export default function Root() {
             <Header units={units} setUnits={setUnits} />
             {!error ? (
                 <UnitsContext value={units}>
-                    <Outlet />
+                    <Outlet context={{ selectedCity, setSelectedCity }} />
                 </UnitsContext>
             ) : (
                 <div className="root-error-wrap">

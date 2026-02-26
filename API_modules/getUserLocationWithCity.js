@@ -11,6 +11,10 @@ export default async function getUserLocationWithCity() {
         )
     );
 
+    return await getCityName(lat, lon);
+};
+
+export async function getCityName(lat, lon) {
     const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1`;
 
     const res = await fetch(url, {
@@ -44,4 +48,4 @@ export default async function getUserLocationWithCity() {
         lon: Number(data.lon),
         country: address.country || "Unknown"
     };
-}
+};
