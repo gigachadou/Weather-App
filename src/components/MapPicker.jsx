@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import "../styles/Map.css";
 
 const LEAFLET_CSS_ID = "leaflet-css-cdn";
 const LEAFLET_SCRIPT_ID = "leaflet-js-cdn";
@@ -101,29 +102,6 @@ export default function MapPicker({
             <div ref={mapContainerRef} className="map-canvas" />
             {error && <div className="map-error">{error}</div>}
             {isLoading && <div className="map-loading">Loading...</div>}
-
-            <style jsx>{`
-                .map-wrapper {
-                    width: 100%;
-                    height: 100%;
-                    position: relative;
-                }
-                .map-canvas {
-                    width: 100%;
-                    height: 100%;
-                }
-                .map-error, .map-loading {
-                    position: absolute;
-                    top: 16px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    background: rgba(0,0,0,0.8);
-                    color: white;
-                    padding: 12px 24px;
-                    border-radius: 8px;
-                    z-index: 1000;
-                }
-            `}</style>
         </div>
     );
 };

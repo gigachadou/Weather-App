@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useOutletContext } from 'react-router-dom';
 import MapPicker from '../components/MapPicker';
 import { getCityName } from '../../API_modules/getUserLocationWithCity';
+import "../styles/Map.css";
 
 export default function Map() {
     const navigate = useNavigate();
@@ -50,17 +51,22 @@ export default function Map() {
 
     return (
         <div className="map-fullscreen">
-            <MapPicker
-                initialLat={selected?.lat ?? 41.3111}
-                initialLon={selected?.lon ?? 69.2797}
-                initialName={selected?.name}
-                onLocationSelect={handleLocationSelect}
-                isLoading={isProcessing}
-            />
+            <div style={{ flex: 1, width: '100%' }}>
+                <MapPicker
+                    initialLat={selected?.lat ?? 41.3111}
+                    initialLon={selected?.lon ?? 69.2797}
+                    initialName={selected?.name}
+                    onLocationSelect={handleLocationSelect}
+                    isLoading={isProcessing}
+                />  
+            </div>
 
             {selected && (
                 <div className="location-info-panel">
-                    <h2>{selected.name}</h2>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        <h2>{selected.name}</h2>
+                        <button onClick={() => { setSelectedCity(selected); navigate("/"); }}>Select</button>
+                    </div>
                     <p>
                         {selected.lat.toFixed(5)}, {selected.lon.toFixed(5)}
                     </p>
@@ -77,55 +83,6 @@ export default function Map() {
                     )}
                 </div>
             )}
-
-            <style jsx>{`
-        .map-fullscreen {
-          position: fixed;
-          inset: 0;
-          width: 100vw;
-          height: 100vh;
-          z-index: 10;
-          background: #000;
-        }
-
-        .location-info-panel {
-          position: absolute;
-          bottom: 24px;
-          left: 16px;
-          right: 16px;
-          max-width: 380px;
-          background: rgba(255, 255, 255, 0.96);
-          backdrop-filter: blur(10px);
-          padding: 16px 20px;
-          border-radius: 12px;
-          box-shadow: 0 6px 24px rgba(0,0,0,0.28);
-          z-index: 100;
-        }
-
-        .location-info-panel h2 {
-          margin: 0 0 8px;
-          font-size: 1.5rem;
-          line-height: 1.2;
-        }
-
-        .location-info-panel p {
-          margin: 4px 0;
-          color: #333;
-        }
-
-        .processing-text {
-          margin-top: 12px;
-          color: #e67e22;
-          font-weight: 500;
-        }
-
-        .hint-text {
-          display: block;
-          margin-top: 12px;
-          color: #666;
-          font-size: 0.9rem;
-        }
-      `}</style>
         </div>
     );
 }

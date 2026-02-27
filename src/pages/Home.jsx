@@ -4,7 +4,7 @@ import CityComponent from "../components/CityComponent";
 import DailyForecast from "../components/DailyForecast";
 import HourlyForecast from "../components/HourlyForecast";
 import getCitySuggestions from "../../API_modules/getCitySuggestion";
-import { IoSearchOutline, IoLocationOutline } from "react-icons/io5";
+import { IoSearchOutline, IoLocationOutline, IoClose } from "react-icons/io5";
 import getUserLocationWithCity from "../../API_modules/getUserLocationWithCity";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
@@ -120,7 +120,7 @@ export default function Home() {
                     />
                 </div>
 
-                <button className="search-button" onClick={() => {navigate("/map")}}>
+                <button className="search-button" onClick={() => { navigate("/map") }}>
                     Open Map
                 </button>
 
@@ -149,7 +149,10 @@ export default function Home() {
             </div>
 
             {loading && <div className="status-message loading">Detecting your location...</div>}
-            {error && <div className="status-message error">{error}</div>}
+            {error && <div className="status-message error">
+                <IoClose size={22} onClick={() => setError(null)} className="status-message iconX" />
+                <span>{error}</span>
+            </div>}
 
             {selectedCity && selectedCity.lat && selectedCity.lon ? (
                 <div className="home__inner">

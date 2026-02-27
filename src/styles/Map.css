@@ -1,0 +1,93 @@
+/* Map.css - global styles for both MapPicker and Map components */
+
+/* ── MapPicker styles ──────────────────────────────────────── */
+.map-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.map-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.map-error,
+.map-loading {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+/* ── Map (full-screen page) styles ─────────────────────────── */
+.map-fullscreen {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    background: #000;
+    display: flex;
+    /* helps force child sizing */
+    flex-direction: column;
+}
+
+.location-info-panel {
+    position: absolute;
+    bottom: 24px;
+    left: 16px;
+    right: 16px;
+    max-width: 380px;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 16px 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
+    z-index: 1000;
+}
+
+.location-info-panel h2 {
+    margin: 0 0 8px;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    color: #111;
+}
+
+.location-info-panel p {
+    margin: 4px 0;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.processing-text {
+    margin-top: 12px;
+    color: #e67e22;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.hint-text {
+    display: block;
+    margin-top: 12px;
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Optional: better mobile experience */
+@media (max-width: 600px) {
+    .location-info-panel {
+        bottom: 16px;
+        left: 12px;
+        right: 12px;
+        padding: 14px 16px;
+    }
+}
